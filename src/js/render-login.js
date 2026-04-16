@@ -8,9 +8,10 @@ export function renderLogin(root, onSuccess) {
         <img src="assets/logo.svg" alt="Метеор Москва" class="login-logo">
         <h1 class="login-title">МЕТЕОР МОСКВА</h1>
         <form id="login-form">
-          <input type="password" name="password" placeholder="Пароль" autocomplete="current-password" required autofocus>
+          <label for="login-password" class="visually-hidden">Пароль</label>
+          <input type="password" id="login-password" name="password" placeholder="Пароль" autocomplete="current-password" required autofocus>
           <button type="submit">Войти</button>
-          <div class="error" id="login-error"></div>
+          <div class="error" id="login-error" role="alert" aria-live="polite"></div>
         </form>
       </div>
     </main>

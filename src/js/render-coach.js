@@ -18,7 +18,7 @@ export async function renderCoach(root, slug) {
   root.innerHTML = `
     <section class="coach-hero">
       <div class="coach-hero-inner">
-        <div class="coach-hero-avatar">${coach.initials}</div>
+        <div class="coach-hero-avatar">${escapeHtml(coach.initials)}</div>
         <div class="coach-hero-text">
           <h1 class="coach-hero-fio">${escapeHtml(coach.fio)}</h1>
           <div class="coach-hero-meta">ТРЕНЕР · СЕЗОН ${SEASON_LABEL}</div>

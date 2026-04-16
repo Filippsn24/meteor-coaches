@@ -31,6 +31,19 @@ a { color: inherit; text-decoration: none; }
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap");
 .font-display { font-family: "Bebas Neue", "Inter", sans-serif; letter-spacing: 0.02em; }
 
+/* === Utilities === */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* === Login === */
 .login {
   min-height: 100vh;

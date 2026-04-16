@@ -30,7 +30,7 @@ export async function renderHome(root) {
   try {
     coaches = await getCoaches();
   } catch (e) {
-    root.querySelector("#grid").innerHTML = `<p style="grid-column:1/-1;color:#ff6b6b;">Не удалось загрузить данные: ${e.message}</p>`;
+    root.querySelector("#grid").innerHTML = `<p style="grid-column:1/-1;color:#ff6b6b;">Не удалось загрузить данные: ${escapeHtml(e.message)}</p>`;
     return;
   }
   const grid = root.querySelector("#grid");
@@ -54,7 +54,7 @@ export async function renderHome(root) {
   function card(c) {
     return `
       <article class="card" data-slug="${c.slug}">
-        <div class="card-avatar">${c.initials}</div>
+        <div class="card-avatar">${escapeHtml(c.initials)}</div>
         <div class="card-body">
           <div class="card-fio">${escapeHtml(c.fio)}</div>
           <div class="card-sub">${c.kids} ${pluralKids(c.kids)}</div>

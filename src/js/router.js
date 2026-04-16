@@ -2,7 +2,7 @@
 //   #/coaches           — главная (сетка)
 //   #/coach/<slug>      — детальная
 
-const listeners = [];
+let currentListener = null;
 
 export function parseRoute(hash) {
   const h = (hash || "#/coaches").replace(/^#/, "");
@@ -17,8 +17,9 @@ export function navigate(hash) {
 }
 
 function dispatch() {
+  if (!currentListener) return;
   const route = parseRoute(window.location.hash);
-  listeners.forEach((fn) => fn(route));
+  currentListener(route);
 }
 
 if (typeof window !== "undefined") {
@@ -26,6 +27,6 @@ if (typeof window !== "undefined") {
 }
 
 export function onRoute(fn) {
-  listeners.push(fn);
+  currentListener = fn;
   dispatch();
 }
