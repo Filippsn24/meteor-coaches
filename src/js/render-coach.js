@@ -15,6 +15,10 @@ export async function renderCoach(root, slug) {
     root.innerHTML = `<p style="padding:32px;">Тренер не найден. <a href="#/coaches" style="color:#9F1239;">← Все тренеры</a></p>`;
     return;
   }
+  const leagueValue = coach.league.total > 0
+    ? `${coach.league.total} <span class="small">команд</span>`
+    : `${coach.league.total}`;
+
   root.innerHTML = `
     <section class="coach-hero">
       <div class="coach-hero-inner">
@@ -27,12 +31,55 @@ export async function renderCoach(root, slug) {
       </div>
     </section>
     <section class="kpi-grid">
-      ${kpiSimple("Дети в группах", coach.kids)}
-      ${kpiPlanFact("Лагерь (год)", coach.camp.fact_total, coach.camp.plan_total, coach.camp.conversion, "camp", coach.camp.seasons)}
-      ${kpiSimple("Мерч продано", coach.merch, "шт")}
-      ${kpiSimple("Сборные команды", coach.teams)}
-      ${kpiPlanFact("Кубок Метеора", coach.cup.fact, coach.cup.plan, coach.cup.conversion, "cup")}
-      ${kpiSimple("Лига Метеора", coach.league_teams, "команд")}
+      ${kpiTile({
+        label: "Дети в группах",
+        valueHtml: String(coach.kids.total),
+        expandable: true,
+        rows: [
+          { label: "Сад", value: coach.kids.kindergarten },
+          { label: "Школа", value: coach.kids.school },
+        ],
+      })}
+      ${kpiPlanFact({
+        label: "Лагерь (год)",
+        fact: coach.camp.fact_total,
+        plan: coach.camp.plan_total,
+        seasons: coach.camp.seasons,
+      })}
+      ${kpiTile({
+        label: "Мерч продано",
+        valueHtml: `${coach.merch.total} <span class="small">шт</span>`,
+        expandable: true,
+        rows: [
+          { label: "Осень", value: coach.merch.autumn },
+          { label: "Зима", value: coach.merch.winter },
+        ],
+      })}
+      ${kpiTile({
+        label: "Сборные команды",
+        valueHtml: String(coach.teams),
+        expandable: false,
+      })}
+      ${kpiTile({
+        label: "Кубок Метеора",
+        valueHtml: String(coach.cup.total),
+        expandable: true,
+        rows: [
+          { label: "Октябрь", value: coach.cup.months.october },
+          { label: "Декабрь", value: coach.cup.months.december },
+          { label: "Февраль", value: coach.cup.months.february },
+          { label: "Апрель", value: coach.cup.months.april },
+        ],
+      })}
+      ${kpiTile({
+        label: "Лига Метеора",
+        valueHtml: leagueValue,
+        expandable: true,
+        rows: [
+          { label: "2015 г.р.", value: coach.league.born2015 },
+          { label: "2017 г.р.", value: coach.league.born2017 },
+        ],
+      })}
     </section>
   `;
   root.querySelectorAll(".kpi.expandable").forEach((el) => {
@@ -40,16 +87,24 @@ export async function renderCoach(root, slug) {
   });
 }
 
-function kpiSimple(label, value, suffix = "") {
+function kpiTile({ label, valueHtml, expandable, rows }) {
+  const expandBlock = expandable && rows && rows.length
+    ? `
+      <div class="kpi-seasons">
+        ${rows.map((r) => `<div class="kpi-seasons-row"><span>${escapeHtml(r.label)}</span><span><b>${r.value}</b></span></div>`).join("")}
+      </div>
+    `
+    : "";
   return `
-    <div class="kpi">
-      <div class="kpi-label">${label}</div>
-      <div class="kpi-value">${value}${suffix ? ` <span class="small">${suffix}</span>` : ""}</div>
+    <div class="kpi ${expandable && rows && rows.length ? "expandable" : ""}">
+      <div class="kpi-label">${escapeHtml(label)}</div>
+      <div class="kpi-value">${valueHtml}</div>
+      ${expandBlock}
     </div>
   `;
 }
 
-function kpiPlanFact(label, fact, plan, conversion, key, seasons) {
+function kpiPlanFact({ label, fact, plan, seasons }) {
   const seasonsBlock = seasons ? `
     <div class="kpi-seasons">
       ${seasonRow("Осень", seasons.autumn)}
@@ -59,16 +114,15 @@ function kpiPlanFact(label, fact, plan, conversion, key, seasons) {
   ` : "";
   return `
     <div class="kpi ${seasons ? "expandable" : ""}">
-      <div class="kpi-label">${label}</div>
+      <div class="kpi-label">${escapeHtml(label)}</div>
       <div class="kpi-value">${fact} <span class="small">/ ${plan}</span></div>
-      <div class="kpi-conv">конверсия: <span class="pct">${conversion === null ? "—" : conversion + "%"}</span></div>
       ${seasonsBlock}
     </div>
   `;
 }
 
 function seasonRow(label, s) {
-  const conv = s.conversion === null ? "—" : s.conversion + "%";
+  const conv = `${s.conversion}%`;
   return `<div class="kpi-seasons-row"><span>${label}</span><span><b>${s.fact}</b> / ${s.plan} · ${conv}</span></div>`;
 }
 

@@ -52,12 +52,15 @@ export async function renderHome(root) {
   }
 
   function card(c) {
+    const sub = (c.kids.kindergarten === 0 && c.kids.school === 0)
+      ? "—"
+      : `${c.kids.kindergarten} сад · ${c.kids.school} шк`;
     return `
       <article class="card" data-slug="${c.slug}">
         <div class="card-avatar">${escapeHtml(c.initials)}</div>
         <div class="card-body">
           <div class="card-fio">${escapeHtml(c.fio)}</div>
-          <div class="card-sub">${c.kids} ${pluralKids(c.kids)}</div>
+          <div class="card-sub">${sub}</div>
         </div>
       </article>
     `;
@@ -69,11 +72,4 @@ export async function renderHome(root) {
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-}
-
-function pluralKids(n) {
-  const n10 = n % 10, n100 = n % 100;
-  if (n10 === 1 && n100 !== 11) return "ребёнок";
-  if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return "ребёнка";
-  return "детей";
 }
