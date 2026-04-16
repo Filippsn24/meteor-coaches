@@ -96,6 +96,10 @@ export async function fetchCoaches(csvUrl) {
   if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
   const text = await res.text();
   return parseCSV(text)
-    .filter((row) => row.fio && String(row.fio).trim().length > 0)
+    .filter((row) => {
+      const fio = row.fio ? String(row.fio).trim() : "";
+      if (!fio) return false;
+      return /\s/.test(fio);
+    })
     .map(rowToCoach);
 }

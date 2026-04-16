@@ -1,6 +1,4 @@
-// CSV_URL заполняется на финальном этапе (см. docs/user/google-sheet-setup.md)
-// На время разработки используем локальный mock.
-export const CSV_URL = "/test-fixtures/sample-dashboard.csv";
+export const CSV_URL = "https://docs.google.com/spreadsheets/d/1Ds11Kv8FV8vj2qBjXxfZDoIicuA0uB8ITMiOzWlWHfc/gviz/tq?tqx=out:csv&sheet=dashboard_data";
 
 // Хэш SHA-256 общего пароля. Сгенерировать: node -e "crypto.subtle.digest('SHA-256', new TextEncoder().encode('PASSWORD')).then(b => console.log(Buffer.from(b).toString('hex')))"
 // По умолчанию: пароль "meteor2026"
