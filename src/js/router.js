@@ -21,8 +21,11 @@ function dispatch() {
   listeners.forEach((fn) => fn(route));
 }
 
+if (typeof window !== "undefined") {
+  window.addEventListener("hashchange", dispatch);
+}
+
 export function onRoute(fn) {
   listeners.push(fn);
-  window.addEventListener("hashchange", dispatch);
   dispatch();
 }
