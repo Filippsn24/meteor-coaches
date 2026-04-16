@@ -1,5 +1,5 @@
 export function parseCSV(text) {
-  const lines = text.replace(/\r\n/g, "\n").split("\n").filter((l) => l.length > 0);
+  const lines = text.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").split("\n").filter((l) => l.length > 0);
   if (lines.length < 2) return [];
   const headers = splitLine(lines[0]);
   return lines.slice(1).map((line) => {
@@ -15,7 +15,12 @@ function splitLine(line) {
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
     if (ch === '"') {
-      inQuotes = !inQuotes;
+      if (inQuotes && line[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
     } else if (ch === "," && !inQuotes) {
       cells.push(cur);
       cur = "";

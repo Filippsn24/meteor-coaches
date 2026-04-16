@@ -30,3 +30,13 @@ test("parseCSV: ignores blank lines", () => {
   const csv = "a,b\n1,2\n\n3,4";
   assert.deepEqual(parseCSV(csv), [{ a: "1", b: "2" }, { a: "3", b: "4" }]);
 });
+
+test("parseCSV: handles escaped double-quotes inside quoted field (RFC 4180)", () => {
+  const csv = 'a,b\n"hello","say ""hi"""';
+  assert.deepEqual(parseCSV(csv), [{ a: "hello", b: 'say "hi"' }]);
+});
+
+test("parseCSV: strips UTF-8 BOM at start of input", () => {
+  const csv = "\uFEFFa,b\n1,2";
+  assert.deepEqual(parseCSV(csv), [{ a: "1", b: "2" }]);
+});
