@@ -1,4 +1,5 @@
 import { fioToSlug } from "./slug.js";
+import { parseCSV } from "./csv.js";
 
 export function computeConversion(plan, fact) {
   if (!plan || plan === 0) return null;
@@ -57,7 +58,6 @@ export function rowToCoach(row) {
 }
 
 export async function fetchCoaches(csvUrl) {
-  const { parseCSV } = await import("./csv.js");
   const res = await fetch(csvUrl);
   if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
   const text = await res.text();
