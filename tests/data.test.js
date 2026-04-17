@@ -9,16 +9,16 @@ const fixtureRows = parseCSV(fixtureCsv);
 
 function sampleRow() {
   return {
-    fio: "Туловский Михаил",
-    kids_kindergarten: "0",
-    kids_school: "17",
-    camp_plan_autumn: "6", camp_fact_autumn: "4", camp_conv_autumn: "3,33%",
-    camp_plan_winter: "6", camp_fact_winter: "5", camp_conv_winter: "4,17%",
-    camp_plan_spring: "7", camp_fact_spring: "3", camp_conv_spring: "2,50%",
-    merch_autumn: "29", merch_winter: "23",
-    teams: "0",
-    cup_october: "1", cup_december: "16", cup_february: "5", cup_april: "7",
-    league_2015: "10", league_2017: "0",
+    "ФИО": "Туловский Михаил",
+    "Дети_сад": "0",
+    "Дети_школа": "17",
+    "Лагерь_план_осень": "6", "Лагерь_факт_осень": "4", "Лагерь_конв_осень": "3,33%",
+    "Лагерь_план_зима": "6", "Лагерь_факт_зима": "5", "Лагерь_конв_зима": "4,17%",
+    "Лагерь_план_весна": "7", "Лагерь_факт_весна": "3", "Лагерь_конв_весна": "2,50%",
+    "Мерч_осень": "29", "Мерч_зима": "23",
+    "Сборные": "0",
+    "Кубок_октябрь": "1", "Кубок_декабрь": "16", "Кубок_февраль": "5", "Кубок_апрель": "7",
+    "Лига_2015": "10", "Лига_2017": "0",
   };
 }
 
@@ -41,9 +41,9 @@ test("rowToCoach: builds full Coach object with new shape", () => {
 });
 
 test("fixture: contains an empty-fio padding row that must be filtered out", () => {
-  const empty = fixtureRows.filter((r) => !r.fio || String(r.fio).trim().length === 0);
+  const empty = fixtureRows.filter((r) => !r["ФИО"] || String(r["ФИО"]).trim().length === 0);
   assert.ok(empty.length >= 1, "fixture should include an empty padding row");
-  const populated = fixtureRows.filter((r) => r.fio && String(r.fio).trim().length > 0);
+  const populated = fixtureRows.filter((r) => r["ФИО"] && String(r["ФИО"]).trim().length > 0);
   assert.equal(populated.length, 3);
 });
 
@@ -92,13 +92,13 @@ test("kids.total = kindergarten + school", () => {
 
 test("rowToCoach: handles empty numeric cells as 0", () => {
   const c = rowToCoach({
-    fio: "Тест Тестов",
-    kids_kindergarten: "",
-    kids_school: "",
-    merch_autumn: "",
-    merch_winter: "",
-    cup_october: "",
-    league_2015: "",
+    "ФИО": "Тест Тестов",
+    "Дети_сад": "",
+    "Дети_школа": "",
+    "Мерч_осень": "",
+    "Мерч_зима": "",
+    "Кубок_октябрь": "",
+    "Лига_2015": "",
   });
   assert.equal(c.kids.total, 0);
   assert.equal(c.merch.total, 0);
@@ -109,6 +109,6 @@ test("rowToCoach: handles empty numeric cells as 0", () => {
 });
 
 test("rowToCoach: initials from single name", () => {
-  const c = rowToCoach({ fio: "Нахушев" });
+  const c = rowToCoach({ "ФИО": "Нахушев" });
   assert.equal(c.initials, "Н");
 });

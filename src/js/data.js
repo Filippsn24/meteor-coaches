@@ -20,44 +20,44 @@ function initials(fio) {
 }
 
 export function rowToCoach(row) {
-  const kindergarten = parseNum(row.kids_kindergarten);
-  const school = parseNum(row.kids_school);
+  const kindergarten = parseNum(row["Дети_сад"]);
+  const school = parseNum(row["Дети_школа"]);
 
   const seasons = {
     autumn: {
-      plan: parseNum(row.camp_plan_autumn),
-      fact: parseNum(row.camp_fact_autumn),
-      conversion: parsePercent(row.camp_conv_autumn),
+      plan: parseNum(row["Лагерь_план_осень"]),
+      fact: parseNum(row["Лагерь_факт_осень"]),
+      conversion: parsePercent(row["Лагерь_конв_осень"]),
     },
     winter: {
-      plan: parseNum(row.camp_plan_winter),
-      fact: parseNum(row.camp_fact_winter),
-      conversion: parsePercent(row.camp_conv_winter),
+      plan: parseNum(row["Лагерь_план_зима"]),
+      fact: parseNum(row["Лагерь_факт_зима"]),
+      conversion: parsePercent(row["Лагерь_конв_зима"]),
     },
     spring: {
-      plan: parseNum(row.camp_plan_spring),
-      fact: parseNum(row.camp_fact_spring),
-      conversion: parsePercent(row.camp_conv_spring),
+      plan: parseNum(row["Лагерь_план_весна"]),
+      fact: parseNum(row["Лагерь_факт_весна"]),
+      conversion: parsePercent(row["Лагерь_конв_весна"]),
     },
   };
   const plan_total = seasons.autumn.plan + seasons.winter.plan + seasons.spring.plan;
   const fact_total = seasons.autumn.fact + seasons.winter.fact + seasons.spring.fact;
 
-  const merch_autumn = parseNum(row.merch_autumn);
-  const merch_winter = parseNum(row.merch_winter);
+  const merch_autumn = parseNum(row["Мерч_осень"]);
+  const merch_winter = parseNum(row["Мерч_зима"]);
 
-  const cup_october = parseNum(row.cup_october);
-  const cup_december = parseNum(row.cup_december);
-  const cup_february = parseNum(row.cup_february);
-  const cup_april = parseNum(row.cup_april);
+  const cup_october = parseNum(row["Кубок_октябрь"]);
+  const cup_december = parseNum(row["Кубок_декабрь"]);
+  const cup_february = parseNum(row["Кубок_февраль"]);
+  const cup_april = parseNum(row["Кубок_апрель"]);
 
-  const born2015 = parseNum(row.league_2015);
-  const born2017 = parseNum(row.league_2017);
+  const born2015 = parseNum(row["Лига_2015"]);
+  const born2017 = parseNum(row["Лига_2017"]);
 
   return {
-    fio: row.fio,
-    slug: fioToSlug(row.fio),
-    initials: initials(row.fio),
+    fio: row["ФИО"],
+    slug: fioToSlug(row["ФИО"]),
+    initials: initials(row["ФИО"]),
     kids: {
       kindergarten,
       school,
@@ -73,7 +73,7 @@ export function rowToCoach(row) {
       autumn: merch_autumn,
       winter: merch_winter,
     },
-    teams: parseNum(row.teams),
+    teams: parseNum(row["Сборные"]),
     cup: {
       total: cup_october + cup_december + cup_february + cup_april,
       months: {
@@ -97,7 +97,7 @@ export async function fetchCoaches(csvUrl) {
   const text = await res.text();
   return parseCSV(text)
     .filter((row) => {
-      const fio = row.fio ? String(row.fio).trim() : "";
+      const fio = row["ФИО"] ? String(row["ФИО"]).trim() : "";
       if (!fio) return false;
       return /\s/.test(fio);
     })
