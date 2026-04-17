@@ -433,6 +433,15 @@ a { color: inherit; text-decoration: none; }
 }
 .rating-table-row .rt-penalty-col { color: #ef4444; }
 
+/* === Sortable columns === */
+.rt-sortable { cursor: pointer; transition: color 0.2s; }
+.rt-sortable:hover { color: #fff; }
+.rt-sort-active { color: var(--burgundy); }
+.rt-header .rt-sort-active { color: var(--burgundy); }
+.rt-col-highlight { color: var(--burgundy); }
+.rating-table-row .rt-col-highlight { color: var(--burgundy); font-weight: 800; }
+.rating-table-row .rt-total-col.rt-col-highlight { color: var(--burgundy); }
+
 /* === Adaptive === */
 @media (max-width: 1023px) {
   .grid { grid-template-columns: repeat(3, 1fr); padding: 24px; }

@@ -9,6 +9,15 @@ async function getCoaches() {
   return cache;
 }
 
+const COLUMNS = [
+  { key: "camp", label: "Лагерь" },
+  { key: "merch", label: "Мерч" },
+  { key: "cup", label: "Кубок" },
+  { key: "league", label: "Лига" },
+  { key: "teams", label: "Сборные" },
+  { key: "content", label: "Контент" },
+];
+
 export async function renderRating(root) {
   root.innerHTML = `
     <header class="header">
@@ -33,40 +42,56 @@ export async function renderRating(root) {
     return;
   }
 
-  const sorted = [...coaches].sort((a, b) => b.rating.total - a.rating.total);
   const list = root.querySelector("#rating-list");
+  let activeSort = null; // null = итого, иначе ключ столбца
 
-  list.innerHTML = `
-    <div class="rt-header-sticky">
-      <div class="rt-header">
-        <div class="rt-rank"></div>
-        <div class="rt-coach"></div>
-        <div class="rt-score-col">Лагерь</div>
-        <div class="rt-score-col">Мерч</div>
-        <div class="rt-score-col">Кубок</div>
-        <div class="rt-score-col">Лига</div>
-        <div class="rt-score-col">Сборные</div>
-        <div class="rt-score-col">Контент</div>
-        <div class="rt-penalty-col">Штраф</div>
-        <div class="rt-total-col">Итого</div>
+  function renderTable() {
+    const sorted = [...coaches].sort((a, b) => {
+      if (activeSort) {
+        return b.rating.scores[activeSort] - a.rating.scores[activeSort];
+      }
+      return b.rating.total - a.rating.total;
+    });
+
+    list.innerHTML = `
+      <div class="rt-header-sticky">
+        <div class="rt-header">
+          <div class="rt-rank"></div>
+          <div class="rt-coach"></div>
+          ${COLUMNS.map((col) => `<div class="rt-score-col rt-sortable${activeSort === col.key ? " rt-sort-active" : ""}" data-sort="${col.key}">${col.label}</div>`).join("")}
+          <div class="rt-penalty-col">Штраф</div>
+          <div class="rt-total-col rt-sortable${activeSort === null ? " rt-sort-active" : ""}" data-sort="total">Итого</div>
+        </div>
       </div>
-    </div>
-    <div class="rating-table">
-      ${sorted.map((c, i) => ratingRow(c, i + 1)).join("")}
-    </div>
-  `;
+      <div class="rating-table">
+        ${sorted.map((c, i) => ratingRow(c, i + 1, activeSort)).join("")}
+      </div>
+    `;
 
-  list.querySelectorAll(".rating-table-row").forEach((el) => {
-    el.addEventListener("click", () => navigate(`#/coach/${el.dataset.slug}`));
-  });
+    list.querySelectorAll(".rating-table-row").forEach((el) => {
+      el.addEventListener("click", () => navigate(`#/coach/${el.dataset.slug}`));
+    });
+
+    list.querySelectorAll(".rt-sortable").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const key = el.dataset.sort;
+        if (key === "total") {
+          activeSort = null;
+        } else {
+          activeSort = activeSort === key ? null : key;
+        }
+        renderTable();
+      });
+    });
+  }
+
+  renderTable();
 }
 
-function ratingRow(c, rank) {
+function ratingRow(c, rank, activeSort) {
   const s = c.rating.scores;
   const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
-  const penaltyHtml = c.rating.penalty > 0
-    ? `<span class="rt-penalty">-${c.rating.penalty}</span>`
-    : "";
 
   return `
     <div class="rating-table-row" data-slug="${c.slug}">
@@ -75,14 +100,9 @@ function ratingRow(c, rank) {
         <div class="rt-avatar">${escapeHtml(c.initials)}</div>
         <div class="rt-name">${escapeHtml(c.fio)}</div>
       </div>
-      <div class="rt-score-col">${s.camp}</div>
-      <div class="rt-score-col">${s.merch}</div>
-      <div class="rt-score-col">${s.cup}</div>
-      <div class="rt-score-col">${s.league}</div>
-      <div class="rt-score-col">${s.teams}</div>
-      <div class="rt-score-col">${s.content}</div>
+      ${COLUMNS.map((col) => `<div class="rt-score-col${activeSort === col.key ? " rt-col-highlight" : ""}">${s[col.key]}</div>`).join("")}
       <div class="rt-penalty-col">${c.rating.penalty > 0 ? `-${c.rating.penalty}` : ""}</div>
-      <div class="rt-total-col">${c.rating.total}</div>
+      <div class="rt-total-col${activeSort === null ? " rt-col-highlight" : ""}">${c.rating.total}</div>
     </div>
   `;
 }
