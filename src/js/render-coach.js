@@ -82,20 +82,14 @@ export async function renderCoach(root, slug) {
 function kpiKids(kids) {
   const oct = kids.october;
   const mar = kids.march;
-  const diffKg = mar.kindergarten - oct.kindergarten;
-  const diffSch = mar.school - oct.school;
-  const diffTotal = mar.total - oct.total;
-  const sign = (n) => n > 0 ? `+${n}` : String(n);
-  const cls = (n) => n > 0 ? "diff-up" : n < 0 ? "diff-down" : "diff-zero";
-  const diffBadge = (n) => n === 0 ? "" : ` <span class="${cls(n)}">${sign(n)}</span>`;
   return `
     <div class="kpi expandable">
       <div class="kpi-label">Дети в группах</div>
-      <div class="kpi-value">${oct.total} → ${mar.total}${diffBadge(diffTotal)}</div>
+      <div class="kpi-value">${oct.total} → ${mar.total}</div>
       <div class="kpi-seasons">
         <div class="kpi-seasons-row"><span></span><span><b>Окт</b> → <b>Мар</b></span></div>
-        <div class="kpi-seasons-row"><span>Сад</span><span><b>${oct.kindergarten}</b> → <b>${mar.kindergarten}</b>${diffBadge(diffKg)}</span></div>
-        <div class="kpi-seasons-row"><span>Школа</span><span><b>${oct.school}</b> → <b>${mar.school}</b>${diffBadge(diffSch)}</span></div>
+        <div class="kpi-seasons-row"><span>Сад</span><span><b>${oct.kindergarten}</b> → <b>${mar.kindergarten}</b></span></div>
+        <div class="kpi-seasons-row"><span>Школа</span><span><b>${oct.school}</b> → <b>${mar.school}</b></span></div>
       </div>
     </div>
   `;
