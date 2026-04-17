@@ -442,10 +442,14 @@ a { color: inherit; text-decoration: none; }
   .kpi-grid { grid-template-columns: 1fr 1fr; padding: 16px; gap: 12px; }
   .kpi { padding: 16px; }
   .kpi-value { font-size: 32px; }
-  .rt-header { display: none; }
-  .rating-table-row { flex-wrap: wrap; padding: 12px; gap: 8px; }
-  .rt-coach { width: auto; flex: 1; }
-  .rt-score-col { width: 40px; font-size: 12px; }
-  .rt-total-col { width: 48px; font-size: 18px; }
+  .rt-header { padding: 8px 12px; gap: 6px; font-size: 9px; }
+  .rating-table-row { padding: 12px; gap: 6px; }
+  .rt-rank { width: 24px; font-size: 14px; }
+  .rt-coach { width: 100px; }
+  .rt-avatar { width: 32px; height: 32px; font-size: 12px; }
+  .rt-name { font-size: 12px; }
+  .rt-score-col { width: 32px; font-size: 12px; }
+  .rt-penalty-col { width: 40px; font-size: 12px; margin-left: 4px; }
+  .rt-total-col { width: 40px; font-size: 16px; margin-left: 4px; }
   .rating-label { width: 100px; }
 }
