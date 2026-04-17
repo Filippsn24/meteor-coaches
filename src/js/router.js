@@ -8,6 +8,7 @@ export function parseRoute(hash) {
   const h = (hash || "#/coaches").replace(/^#/, "");
   const parts = h.split("/").filter(Boolean);
   if (parts[0] === "coach" && parts[1]) return { name: "coach", slug: parts[1] };
+  if (parts[0] === "rating") return { name: "rating" };
   return { name: "home" };
 }
 

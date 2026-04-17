@@ -19,7 +19,10 @@ export async function renderHome(root) {
         <img src="assets/logo.png" alt="" class="header-logo">
         <div class="header-title">ТРЕНЕРСКИЙ СОСТАВ</div>
       </div>
-      <div class="header-season">СЕЗОН ${SEASON_LABEL}</div>
+      <div class="header-nav">
+        <a href="#/coaches" class="nav-link nav-active">Тренеры</a>
+        <a href="#/rating" class="nav-link">Рейтинг</a>
+      </div>
     </header>
     <div class="search-bar">
       <input type="search" id="search" placeholder="Поиск по фамилии..." autocomplete="off">
