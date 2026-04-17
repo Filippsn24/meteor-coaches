@@ -149,14 +149,14 @@ function seasonRow(label, s) {
 function ratingBar(label, value, max, isPenalty = false) {
   const pct = isPenalty ? 0 : (max > 0 ? Math.min(value / max * 100, 100) : 0);
   const cls = isPenalty ? "rating-bar-penalty" : "";
-  const display = isPenalty ? String(value) : `${value} / ${max}`;
+  const display = isPenalty ? String(value) : value;
   return `
     <div class="rating-row">
       <span class="rating-label">${escapeHtml(label)}</span>
+      <span class="rating-value ${cls}">${display}</span>
       <div class="rating-track">
         <div class="rating-fill ${cls}" style="width:${pct}%"></div>
       </div>
-      <span class="rating-value ${cls}">${display}</span>
     </div>
   `;
 }
