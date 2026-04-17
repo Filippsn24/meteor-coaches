@@ -63,11 +63,11 @@ function ratingRow(c, rank) {
       </div>
       <div class="rt-bars">
         <div class="rt-bar-group">
-          ${miniBar("Лаг", s.camp, 5)}
+          ${miniBar("Лагерь", s.camp, 5)}
           ${miniBar("Мерч", s.merch, 5)}
-          ${miniBar("Куб", s.cup, 5)}
+          ${miniBar("Кубок", s.cup, 5)}
           ${miniBar("Лига", s.league, 5)}
-          ${miniBar("Сбор", s.teams, 5)}
+          ${miniBar("Сборные", s.teams, 5)}
         </div>
       </div>
       <div class="rt-total">
