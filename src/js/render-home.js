@@ -1,6 +1,7 @@
 import { fetchCoaches } from "./data.js";
 import { CSV_URL, SEASON_LABEL } from "./config.js";
 import { navigate } from "./router.js";
+import { hasPhoto, photoUrl } from "./avatar.js";
 
 let cache = null;
 
@@ -61,7 +62,7 @@ export async function renderHome(root) {
       : `${oct.kindergarten} сад · ${oct.school} шк`;
     return `
       <article class="card" data-slug="${c.slug}">
-        <div class="card-avatar">${escapeHtml(c.initials)}</div>
+        <div class="card-avatar">${hasPhoto(c.slug) ? `<img src="${photoUrl(c.slug)}" alt="${escapeHtml(c.fio)}">` : escapeHtml(c.initials)}</div>
         <div class="card-body">
           <div class="card-fio">${escapeHtml(c.fio)}</div>
           <div class="card-sub">${sub}</div>

@@ -1,6 +1,7 @@
 import { fetchCoaches } from "./data.js";
 import { CSV_URL, SEASON_LABEL } from "./config.js";
 import { navigate } from "./router.js";
+import { hasPhoto, photoUrl } from "./avatar.js";
 
 let cache = null;
 async function getCoaches() {
@@ -97,7 +98,7 @@ function ratingRow(c, rank, activeSort) {
     <div class="rating-table-row" data-slug="${c.slug}">
       <div class="rt-rank">${medal || rank}</div>
       <div class="rt-coach">
-        <div class="rt-avatar">${escapeHtml(c.initials)}</div>
+        <div class="rt-avatar">${hasPhoto(c.slug) ? `<img src="${photoUrl(c.slug)}" alt="${escapeHtml(c.fio)}">` : escapeHtml(c.initials)}</div>
         <div class="rt-name">${escapeHtml(c.fio)}</div>
       </div>
       ${COLUMNS.map((col) => `<div class="rt-score-col${activeSort === col.key ? " rt-col-highlight" : ""}">${s[col.key]}</div>`).join("")}
