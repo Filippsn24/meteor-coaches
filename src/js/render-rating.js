@@ -46,7 +46,7 @@ export async function renderRating(root) {
         <div class="rt-score-col">Кубок</div>
         <div class="rt-score-col">Лига</div>
         <div class="rt-score-col">Сборные</div>
-        <div class="rt-penalty-col">Штраф</div>
+        <div class="rt-penalty-col">Контент штраф</div>
         <div class="rt-total-col">Итого</div>
       </div>
       ${sorted.map((c, i) => ratingRow(c, i + 1)).join("")}
