@@ -43,8 +43,8 @@ export async function renderCoach(root, slug) {
         valueHtml: `${coach.merch.total} <span class="small">шт</span>`,
         expandable: true,
         rows: [
-          { label: "Осень", value: coach.merch.autumn },
-          { label: "Зима", value: coach.merch.winter },
+          { label: "Осень", value: `${coach.merch.autumn} шт` },
+          { label: "Зима", value: `${coach.merch.winter} шт` },
         ],
       })}
       ${kpiTile({
@@ -87,14 +87,15 @@ function kpiKids(kids) {
   const diffTotal = mar.total - oct.total;
   const sign = (n) => n > 0 ? `+${n}` : String(n);
   const cls = (n) => n > 0 ? "diff-up" : n < 0 ? "diff-down" : "diff-zero";
+  const diffBadge = (n) => n === 0 ? "" : ` <span class="${cls(n)}">${sign(n)}</span>`;
   return `
     <div class="kpi expandable">
       <div class="kpi-label">Дети в группах</div>
-      <div class="kpi-value">${oct.total} → ${mar.total} <span class="small ${cls(diffTotal)}">${sign(diffTotal)}</span></div>
+      <div class="kpi-value">${oct.total} → ${mar.total}${diffBadge(diffTotal)}</div>
       <div class="kpi-seasons">
         <div class="kpi-seasons-row"><span></span><span><b>Окт</b> → <b>Мар</b></span></div>
-        <div class="kpi-seasons-row"><span>Сад</span><span><b>${oct.kindergarten}</b> → <b>${mar.kindergarten}</b> <span class="${cls(diffKg)}">${sign(diffKg)}</span></span></div>
-        <div class="kpi-seasons-row"><span>Школа</span><span><b>${oct.school}</b> → <b>${mar.school}</b> <span class="${cls(diffSch)}">${sign(diffSch)}</span></span></div>
+        <div class="kpi-seasons-row"><span>Сад</span><span><b>${oct.kindergarten}</b> → <b>${mar.kindergarten}</b>${diffBadge(diffKg)}</span></div>
+        <div class="kpi-seasons-row"><span>Школа</span><span><b>${oct.school}</b> → <b>${mar.school}</b>${diffBadge(diffSch)}</span></div>
       </div>
     </div>
   `;
@@ -128,7 +129,7 @@ function kpiPlanFact({ label, fact, plan, seasons }) {
   return `
     <div class="kpi ${seasons ? "expandable" : ""}">
       <div class="kpi-label">${escapeHtml(label)}</div>
-      <div class="kpi-value">${fact} <span class="small">/ ${plan}</span></div>
+      <div class="kpi-value">план ${plan} факт ${fact}</div>
       ${seasonsBlock}
     </div>
   `;
@@ -136,7 +137,7 @@ function kpiPlanFact({ label, fact, plan, seasons }) {
 
 function seasonRow(label, s) {
   const conv = `${s.conversion}%`;
-  return `<div class="kpi-seasons-row"><span>${label}</span><span><b>${s.fact}</b> / ${s.plan} · ${conv}</span></div>`;
+  return `<div class="kpi-seasons-row"><span>${label}</span><span>план ${s.plan} факт <b>${s.fact}</b> · ${conv}</span></div>`;
 }
 
 function escapeHtml(s) {
