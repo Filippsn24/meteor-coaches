@@ -1,7 +1,20 @@
-<!-- Упрощённый щит Метеор -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" fill="none">
-  <path d="M50 5 L95 20 V60 Q95 90 50 105 Q5 90 5 60 V20 Z"
-        fill="none" stroke="#9F1239" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M25 35 L40 75 L50 50 L60 75 L75 35"
-        fill="none" stroke="#9F1239" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" fill="none">
+  <!-- Shield - angular shape (flat top, pointed bottom) -->
+  <path d="M10 30 L10 155 L100 230 L190 155 L190 30 Z"
+        fill="white"/>
+  <!-- Shield inner (bordeaux fill) -->
+  <path d="M22 42 L22 148 L100 216 L178 148 L178 42 Z"
+        fill="#9F1239"/>
+  <!-- 3D Block M - white -->
+  <!-- Back face of the M block -->
+  <path d="M50 75 L50 180 L85 180 L85 130 L100 150 L115 130 L115 180 L150 180 L150 75 L122 75 L100 102 L78 75 Z"
+        fill="white"/>
+  <!-- Front-bottom 3D extrusion -->
+  <path d="M50 180 L62 192 L97 192 L85 180 Z" fill="rgba(255,255,255,0.6)"/>
+  <path d="M115 180 L103 192 L138 192 L150 180 Z" fill="rgba(255,255,255,0.6)"/>
+  <path d="M62 192 L97 192 L97 142 L88 130 L85 130 L85 180 L50 180 L62 192 Z" fill="rgba(255,255,255,0.35)"/>
+  <path d="M103 192 L138 192 L150 180 L115 180 L115 130 L112 130 L103 142 L103 192 Z" fill="rgba(255,255,255,0.35)"/>
+  <!-- Dark accent for 3D depth on M -->
+  <path d="M85 130 L100 150 L100 108 L85 90 L85 130 Z" fill="#9F1239" opacity="0.5"/>
+  <path d="M115 130 L100 150 L100 108 L115 90 L115 130 Z" fill="#9F1239" opacity="0.3"/>
 </svg>

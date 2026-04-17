@@ -48,7 +48,7 @@ export async function renderCoach(root, slug) {
         ],
       })}
       ${kpiTile({
-        label: "Команды ВЛиге",
+        label: "Играющие сборные",
         valueHtml: String(coach.teams),
         expandable: false,
       })}

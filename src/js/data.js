@@ -77,7 +77,7 @@ export function rowToCoach(row) {
       autumn: merch_autumn,
       winter: merch_winter,
     },
-    teams: parseNum(row["Команды ВЛиге"]),
+    teams: parseNum(row["Играющие_сборные"]),
     cup: {
       total: cup_october + cup_december + cup_february + cup_april,
       months: {
