@@ -92,18 +92,65 @@ export function rowToCoach(row) {
       born2015,
       born2017,
     },
+    penalty: parseNum(row["Штраф_апрель"]),
   };
+}
+
+export function calculateRatings(coaches) {
+  const kidsTotal = (c) => c.kids.march.total || c.kids.october.total || 1;
+  const per10 = (val, c) => val / kidsTotal(c) * 10;
+
+  // Средняя конверсия лагеря
+  const campAvg = (c) => {
+    const convs = [c.camp.seasons.autumn, c.camp.seasons.winter, c.camp.seasons.spring]
+      .filter((s) => s.plan > 0);
+    if (convs.length === 0) return 0;
+    return convs.reduce((sum, s) => sum + s.conversion, 0) / convs.length;
+  };
+
+  // Сырые значения для каждого тренера
+  const raw = coaches.map((c) => ({
+    camp: campAvg(c),
+    merch: per10(c.merch.total, c),
+    cup: per10(c.cup.total, c),
+    league: c.league.total,
+  }));
+
+  // Максимумы для нормализации
+  const max = {
+    camp: Math.max(...raw.map((r) => r.camp), 1),
+    merch: Math.max(...raw.map((r) => r.merch), 1),
+    cup: Math.max(...raw.map((r) => r.cup), 1),
+    league: Math.max(...raw.map((r) => r.league), 1),
+  };
+
+  // Считаем баллы
+  return coaches.map((c, i) => {
+    const r = raw[i];
+    const scores = {
+      camp: +(r.camp / max.camp * 5).toFixed(1),
+      merch: +(r.merch / max.merch * 5).toFixed(1),
+      cup: +(r.cup / max.cup * 5).toFixed(1),
+      league: +(r.league / max.league * 5).toFixed(1),
+      teams: c.teams > 0 ? 5 : 0,
+    };
+    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams;
+    const total = +(bonus - c.penalty).toFixed(1);
+    c.rating = { scores, penalty: c.penalty, bonus, total };
+    return c;
+  });
 }
 
 export async function fetchCoaches(csvUrl) {
   const res = await fetch(csvUrl);
   if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
   const text = await res.text();
-  return parseCSV(text)
+  const coaches = parseCSV(text)
     .filter((row) => {
       const fio = row["ФИО"] ? String(row["ФИО"]).trim() : "";
       if (!fio) return false;
       return /\s/.test(fio);
     })
     .map(rowToCoach);
+  return calculateRatings(coaches);
 }

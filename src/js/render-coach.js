@@ -73,6 +73,18 @@ export async function renderCoach(root, slug) {
         ],
       })}
     </section>
+    <section class="rating-section">
+      <h2 class="rating-title">РЕЙТИНГ ТРЕНЕРА</h2>
+      <div class="rating-total">${coach.rating.total}</div>
+      <div class="rating-bars">
+        ${ratingBar("Лагерь", coach.rating.scores.camp, 5)}
+        ${ratingBar("Мерч", coach.rating.scores.merch, 5)}
+        ${ratingBar("Кубок Метеора", coach.rating.scores.cup, 5)}
+        ${ratingBar("Суперлига", coach.rating.scores.league, 5)}
+        ${ratingBar("Играющие сборные", coach.rating.scores.teams, 5)}
+        ${coach.rating.penalty > 0 ? ratingBar("Штраф контент", -coach.rating.penalty, 0, true) : ""}
+      </div>
+    </section>
   `;
   root.querySelectorAll(".kpi.expandable").forEach((el) => {
     el.addEventListener("click", () => el.classList.toggle("expanded"));
@@ -132,6 +144,21 @@ function kpiPlanFact({ label, fact, plan, seasons }) {
 function seasonRow(label, s) {
   const conv = `${s.conversion}%`;
   return `<div class="kpi-seasons-row"><span>${label}</span><span>план ${s.plan} факт <b>${s.fact}</b> · ${conv}</span></div>`;
+}
+
+function ratingBar(label, value, max, isPenalty = false) {
+  const pct = isPenalty ? 0 : (max > 0 ? Math.min(value / max * 100, 100) : 0);
+  const cls = isPenalty ? "rating-bar-penalty" : "";
+  const display = isPenalty ? String(value) : `${value} / ${max}`;
+  return `
+    <div class="rating-row">
+      <span class="rating-label">${escapeHtml(label)}</span>
+      <div class="rating-track">
+        <div class="rating-fill ${cls}" style="width:${pct}%"></div>
+      </div>
+      <span class="rating-value ${cls}">${display}</span>
+    </div>
+  `;
 }
 
 function escapeHtml(s) {

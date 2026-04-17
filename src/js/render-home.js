@@ -63,6 +63,7 @@ export async function renderHome(root) {
           <div class="card-fio">${escapeHtml(c.fio)}</div>
           <div class="card-sub">${sub}</div>
         </div>
+        <div class="card-rating">${c.rating.total}</div>
       </article>
     `;
   }
