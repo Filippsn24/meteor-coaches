@@ -10,15 +10,17 @@ const fixtureRows = parseCSV(fixtureCsv);
 function sampleRow() {
   return {
     "ФИО": "Туловский Михаил",
-    "Дети_сад": "0",
-    "Дети_школа": "17",
-    "Лагерь_план_осень": "6", "Лагерь_факт_осень": "4", "Лагерь_конв_осень": "3,33%",
-    "Лагерь_план_зима": "6", "Лагерь_факт_зима": "5", "Лагерь_конв_зима": "4,17%",
-    "Лагерь_план_весна": "7", "Лагерь_факт_весна": "3", "Лагерь_конв_весна": "2,50%",
+    "Дети_сад_октябрь": "0",
+    "Дети_школа_октябрь": "17",
+    "Дети_сад_март": "0",
+    "Дети_школа_март": "17",
+    "Лагерь_план_осень": "6", "Лагерь_факт_осень": "4", "Лагерь_конверсия_осень": "3,33%",
+    "Лагерь_план_зима": "6", "Лагерь_факт_зима": "5", "Лагерь_конверсия_зима": "4,17%",
+    "Лагерь_план_весна": "7", "Лагерь_факт_весна": "3", "Лагерь_конверсия_весна": "2,50%",
     "Мерч_осень": "29", "Мерч_зима": "23",
-    "Сборные": "0",
-    "Кубок_октябрь": "1", "Кубок_декабрь": "16", "Кубок_февраль": "5", "Кубок_апрель": "7",
-    "Лига_2015": "10", "Лига_2017": "0",
+    "Команды ВЛиге": "0",
+    "Кубок_метеор_октябрь": "1", "Кубок_метеор_декабрь": "16", "Кубок_метеор_февраль": "5", "Кубок_метеор_апрель": "7",
+    "Суперлига_2015": "10", "Суперлига_2017": "0",
   };
 }
 
@@ -27,7 +29,9 @@ test("rowToCoach: builds full Coach object with new shape", () => {
   assert.equal(c.fio, "Туловский Михаил");
   assert.equal(c.slug, "tulovskij-mihail");
   assert.equal(c.initials, "ТМ");
-  assert.deepEqual(c.kids, { kindergarten: 0, school: 17, total: 17 });
+  assert.deepEqual(c.kids.october, { kindergarten: 0, school: 17, total: 17 });
+  assert.deepEqual(c.kids.march, { kindergarten: 0, school: 17, total: 17 });
+  assert.equal(c.kids.total, 17);
   assert.equal(c.camp.fact_total, 12);
   assert.equal(c.camp.plan_total, 19);
   assert.deepEqual(c.camp.seasons.autumn, { plan: 6, fact: 4, conversion: 3.33 });
@@ -85,20 +89,25 @@ test("league.total = born2015 + born2017", () => {
   assert.equal(c.league.total, c.league.born2015 + c.league.born2017);
 });
 
-test("kids.total = kindergarten + school", () => {
+test("kids: october and march tracked separately", () => {
   const c = rowToCoach(sampleRow());
-  assert.equal(c.kids.total, c.kids.kindergarten + c.kids.school);
+  assert.equal(c.kids.october.kindergarten, 0);
+  assert.equal(c.kids.october.school, 17);
+  assert.equal(c.kids.march.kindergarten, 0);
+  assert.equal(c.kids.march.school, 17);
 });
 
 test("rowToCoach: handles empty numeric cells as 0", () => {
   const c = rowToCoach({
     "ФИО": "Тест Тестов",
-    "Дети_сад": "",
-    "Дети_школа": "",
+    "Дети_сад_октябрь": "",
+    "Дети_школа_октябрь": "",
+    "Дети_сад_март": "",
+    "Дети_школа_март": "",
     "Мерч_осень": "",
     "Мерч_зима": "",
-    "Кубок_октябрь": "",
-    "Лига_2015": "",
+    "Кубок_метеор_октябрь": "",
+    "Суперлига_2015": "",
   });
   assert.equal(c.kids.total, 0);
   assert.equal(c.merch.total, 0);

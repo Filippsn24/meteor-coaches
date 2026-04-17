@@ -52,9 +52,10 @@ export async function renderHome(root) {
   }
 
   function card(c) {
-    const sub = (c.kids.kindergarten === 0 && c.kids.school === 0)
+    const oct = c.kids.october;
+    const sub = (oct.kindergarten === 0 && oct.school === 0)
       ? "—"
-      : `${c.kids.kindergarten} сад · ${c.kids.school} шк`;
+      : `${oct.kindergarten} сад · ${oct.school} шк`;
     return `
       <article class="card" data-slug="${c.slug}">
         <div class="card-avatar">${escapeHtml(c.initials)}</div>

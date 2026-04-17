@@ -269,6 +269,9 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-dim);
 }
 .kpi-seasons-row b { color: #fff; font-weight: 600; }
+.diff-up { color: #22c55e; font-weight: 600; }
+.diff-down { color: #ef4444; font-weight: 600; }
+.diff-zero { color: #a3a3a3; }
 
 /* === Adaptive === */
 @media (max-width: 1023px) {

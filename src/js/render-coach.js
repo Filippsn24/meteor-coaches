@@ -31,15 +31,7 @@ export async function renderCoach(root, slug) {
       </div>
     </section>
     <section class="kpi-grid">
-      ${kpiTile({
-        label: "Дети в группах",
-        valueHtml: String(coach.kids.total),
-        expandable: true,
-        rows: [
-          { label: "Сад", value: coach.kids.kindergarten },
-          { label: "Школа", value: coach.kids.school },
-        ],
-      })}
+      ${kpiKids(coach.kids)}
       ${kpiPlanFact({
         label: "Лагерь (год)",
         fact: coach.camp.fact_total,
@@ -56,7 +48,7 @@ export async function renderCoach(root, slug) {
         ],
       })}
       ${kpiTile({
-        label: "Сборные команды",
+        label: "Команды ВЛиге",
         valueHtml: String(coach.teams),
         expandable: false,
       })}
@@ -72,7 +64,7 @@ export async function renderCoach(root, slug) {
         ],
       })}
       ${kpiTile({
-        label: "Лига Метеора",
+        label: "Суперлига",
         valueHtml: leagueValue,
         expandable: true,
         rows: [
@@ -85,6 +77,27 @@ export async function renderCoach(root, slug) {
   root.querySelectorAll(".kpi.expandable").forEach((el) => {
     el.addEventListener("click", () => el.classList.toggle("expanded"));
   });
+}
+
+function kpiKids(kids) {
+  const oct = kids.october;
+  const mar = kids.march;
+  const diffKg = mar.kindergarten - oct.kindergarten;
+  const diffSch = mar.school - oct.school;
+  const diffTotal = mar.total - oct.total;
+  const sign = (n) => n > 0 ? `+${n}` : String(n);
+  const cls = (n) => n > 0 ? "diff-up" : n < 0 ? "diff-down" : "diff-zero";
+  return `
+    <div class="kpi expandable">
+      <div class="kpi-label">Дети в группах</div>
+      <div class="kpi-value">${oct.total} → ${mar.total} <span class="small ${cls(diffTotal)}">${sign(diffTotal)}</span></div>
+      <div class="kpi-seasons">
+        <div class="kpi-seasons-row"><span></span><span><b>Окт</b> → <b>Мар</b></span></div>
+        <div class="kpi-seasons-row"><span>Сад</span><span><b>${oct.kindergarten}</b> → <b>${mar.kindergarten}</b> <span class="${cls(diffKg)}">${sign(diffKg)}</span></span></div>
+        <div class="kpi-seasons-row"><span>Школа</span><span><b>${oct.school}</b> → <b>${mar.school}</b> <span class="${cls(diffSch)}">${sign(diffSch)}</span></span></div>
+      </div>
+    </div>
+  `;
 }
 
 function kpiTile({ label, valueHtml, expandable, rows }) {
