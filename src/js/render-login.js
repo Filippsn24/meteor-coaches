@@ -5,7 +5,7 @@ export function renderLogin(root, onSuccess) {
   root.innerHTML = `
     <main class="login">
       <div class="login-box">
-        <img src="assets/logo.svg" alt="Метеор Москва" class="login-logo">
+        <img src="assets/logo.png" alt="Метеор Москва" class="login-logo">
         <h1 class="login-title">МЕТЕОР МОСКВА</h1>
         <form id="login-form">
           <label for="login-password" class="visually-hidden">Пароль</label>

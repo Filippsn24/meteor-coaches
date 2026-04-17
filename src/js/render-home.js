@@ -16,7 +16,7 @@ export async function renderHome(root) {
   root.innerHTML = `
     <header class="header">
       <div class="header-brand">
-        <img src="assets/logo.svg" alt="" class="header-logo">
+        <img src="assets/logo.png" alt="" class="header-logo">
         <div class="header-title">ТРЕНЕРСКИЙ СОСТАВ</div>
       </div>
       <div class="header-season">СЕЗОН ${SEASON_LABEL}</div>
