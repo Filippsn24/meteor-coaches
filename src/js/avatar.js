@@ -1,7 +1,9 @@
 const PHOTOS = [
   "vasilchenko-sasha",
+  "vasilchenko-vova",
   "nahushev-kantemir",
   "bufaten-pavel",
+  "bufatin-pavel",
   "saratovskij-danila",
   "shatov-aleksandr",
   "tulovskij-mihail",
