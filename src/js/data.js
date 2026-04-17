@@ -132,7 +132,7 @@ export function calculateRatings(coaches) {
       merch: +(r.merch / max.merch * 5).toFixed(1),
       cup: +(r.cup / max.cup * 5).toFixed(1),
       league: +(r.league / max.league * 5).toFixed(1),
-      teams: c.teams > 0 ? 5 : 0,
+      teams: +(Math.min(c.teams * 1.5, 5)).toFixed(1),
     };
     const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams;
     const total = +(bonus - c.penalty).toFixed(1);
