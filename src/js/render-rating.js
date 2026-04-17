@@ -46,7 +46,8 @@ export async function renderRating(root) {
         <div class="rt-score-col">Кубок</div>
         <div class="rt-score-col">Лига</div>
         <div class="rt-score-col">Сборные</div>
-        <div class="rt-penalty-col">Контент штраф</div>
+        <div class="rt-score-col">Контент</div>
+        <div class="rt-penalty-col">Штраф</div>
         <div class="rt-total-col">Итого</div>
       </div>
     </div>
@@ -79,6 +80,7 @@ function ratingRow(c, rank) {
       <div class="rt-score-col">${s.cup}</div>
       <div class="rt-score-col">${s.league}</div>
       <div class="rt-score-col">${s.teams}</div>
+      <div class="rt-score-col">${s.content}</div>
       <div class="rt-penalty-col">${c.rating.penalty > 0 ? `-${c.rating.penalty}` : ""}</div>
       <div class="rt-total-col">${c.rating.total}</div>
     </div>

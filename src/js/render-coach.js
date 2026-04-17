@@ -82,6 +82,7 @@ export async function renderCoach(root, slug) {
         ${ratingBar("Кубок Метеора", coach.rating.scores.cup, 5)}
         ${ratingBar("Суперлига", coach.rating.scores.league, 5)}
         ${ratingBar("Играющие сборные", coach.rating.scores.teams, 5)}
+        ${ratingBar("Контент бонус", coach.rating.scores.content, 5)}
         ${coach.rating.penalty > 0 ? ratingBar("Штраф контент", -coach.rating.penalty, 0, true) : ""}
       </div>
     </section>

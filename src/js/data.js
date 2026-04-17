@@ -93,6 +93,7 @@ export function rowToCoach(row) {
       born2017,
     },
     penalty: parseNum(row["Штраф_апрель"]),
+    contentBonus: Math.min(parseNum(row["Контент_бонус"]), 5),
   };
 }
 
@@ -133,8 +134,9 @@ export function calculateRatings(coaches) {
       cup: +(r.cup / max.cup * 5).toFixed(1),
       league: +(r.league / max.league * 5).toFixed(1),
       teams: +(Math.min(c.teams * 1.5, 5)).toFixed(1),
+      content: c.contentBonus,
     };
-    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams;
+    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams + scores.content;
     const total = +(bonus - c.penalty).toFixed(1);
     c.rating = { scores, penalty: c.penalty, bonus, total };
     return c;

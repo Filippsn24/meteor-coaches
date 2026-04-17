@@ -21,6 +21,8 @@ function sampleRow() {
     "Играющие_сборные": "0",
     "Кубок_метеор_октябрь": "1", "Кубок_метеор_декабрь": "16", "Кубок_метеор_февраль": "5", "Кубок_метеор_апрель": "7",
     "Суперлига_2015": "10", "Суперлига_2017": "0",
+    "Штраф_апрель": "0",
+    "Контент_бонус": "3",
   };
 }
 
@@ -42,6 +44,8 @@ test("rowToCoach: builds full Coach object with new shape", () => {
   assert.equal(c.cup.total, 29);
   assert.deepEqual(c.cup.months, { october: 1, december: 16, february: 5, april: 7 });
   assert.deepEqual(c.league, { total: 10, born2015: 10, born2017: 0 });
+  assert.equal(c.contentBonus, 3);
+  assert.equal(c.penalty, 0);
 });
 
 test("fixture: contains an empty-fio padding row that must be filtered out", () => {
@@ -115,6 +119,13 @@ test("rowToCoach: handles empty numeric cells as 0", () => {
   assert.equal(c.league.total, 0);
   assert.equal(c.camp.fact_total, 0);
   assert.equal(c.camp.seasons.autumn.conversion, 0);
+});
+
+test("contentBonus: capped at 5", () => {
+  const row = sampleRow();
+  row["Контент_бонус"] = "8";
+  const c = rowToCoach(row);
+  assert.equal(c.contentBonus, 5);
 });
 
 test("rowToCoach: initials from single name", () => {
