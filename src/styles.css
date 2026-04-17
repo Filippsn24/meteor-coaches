@@ -350,6 +350,15 @@ a { color: inherit; text-decoration: none; }
 
 /* === Rating leaderboard === */
 .rating-list { max-width: 900px; margin: 0 auto; padding: 24px; overflow-x: auto; }
+.rating-table { position: relative; }
+.rt-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #0a0a0a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 .rating-table { display: flex; flex-direction: column; gap: 8px; }
 .rt-header {
   display: flex;
