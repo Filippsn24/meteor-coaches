@@ -10,6 +10,7 @@ const PHOTOS = [
   "vasilev-oleg",
   "kalinkin-nikita",
   "ionov-pavel",
+  "tashaev-hasan",
 ];
 
 const photoSet = new Set(PHOTOS);
