@@ -37,7 +37,7 @@ export async function renderRating(root) {
   const list = root.querySelector("#rating-list");
 
   list.innerHTML = `
-    <div class="rating-table">
+    <div class="rt-header-sticky">
       <div class="rt-header">
         <div class="rt-rank"></div>
         <div class="rt-coach"></div>
@@ -49,6 +49,8 @@ export async function renderRating(root) {
         <div class="rt-penalty-col">Контент штраф</div>
         <div class="rt-total-col">Итого</div>
       </div>
+    </div>
+    <div class="rating-table">
       ${sorted.map((c, i) => ratingRow(c, i + 1)).join("")}
     </div>
   `;
