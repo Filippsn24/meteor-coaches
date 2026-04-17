@@ -99,19 +99,18 @@ export function rowToCoach(row) {
 
 export function calculateRatings(coaches) {
   const kidsTotal = (c) => c.kids.march.total || c.kids.october.total || 1;
+  const kidsSchool = (c) => c.kids.march.school || c.kids.october.school || 1;
   const per10 = (val, c) => val / kidsTotal(c) * 10;
 
-  // Средняя конверсия лагеря
-  const campAvg = (c) => {
-    const convs = [c.camp.seasons.autumn, c.camp.seasons.winter, c.camp.seasons.spring]
-      .filter((s) => s.plan > 0);
-    if (convs.length === 0) return 0;
-    return convs.reduce((sum, s) => sum + s.conversion, 0) / convs.length;
+  // Конверсия лагеря: факт / дети школы (в лагерь едут только школьники)
+  const campConv = (c) => {
+    const school = kidsSchool(c);
+    return c.camp.fact_total / school * 100;
   };
 
   // Сырые значения для каждого тренера
   const raw = coaches.map((c) => ({
-    camp: campAvg(c),
+    camp: campConv(c),
     merch: per10(c.merch.total, c),
     cup: per10(c.cup.total, c),
     league: c.league.total,
