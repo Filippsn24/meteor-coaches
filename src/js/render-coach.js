@@ -152,8 +152,10 @@ function ratingBar(label, value, max, isPenalty = false) {
   const display = isPenalty ? String(value) : value;
   return `
     <div class="rating-row">
-      <span class="rating-label">${escapeHtml(label)}</span>
-      <span class="rating-value ${cls}">${display}</span>
+      <div class="rating-row-top">
+        <span class="rating-label">${escapeHtml(label)}</span>
+        <span class="rating-value ${cls}">${display}</span>
+      </div>
       <div class="rating-track">
         <div class="rating-fill ${cls}" style="width:${pct}%"></div>
       </div>
