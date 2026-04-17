@@ -38,6 +38,16 @@ export async function renderRating(root) {
 
   list.innerHTML = `
     <div class="rating-table">
+      <div class="rt-header">
+        <div class="rt-rank"></div>
+        <div class="rt-coach"></div>
+        <div class="rt-score-col">Лагерь</div>
+        <div class="rt-score-col">Мерч</div>
+        <div class="rt-score-col">Кубок</div>
+        <div class="rt-score-col">Лига</div>
+        <div class="rt-score-col">Сборные</div>
+        <div class="rt-total-col">Итого</div>
+      </div>
       ${sorted.map((c, i) => ratingRow(c, i + 1)).join("")}
     </div>
   `;
@@ -61,30 +71,15 @@ function ratingRow(c, rank) {
         <div class="rt-avatar">${escapeHtml(c.initials)}</div>
         <div class="rt-name">${escapeHtml(c.fio)}</div>
       </div>
-      <div class="rt-bars">
-        <div class="rt-bar-group">
-          ${miniBar("Лагерь", s.camp, 5)}
-          ${miniBar("Мерч", s.merch, 5)}
-          ${miniBar("Кубок", s.cup, 5)}
-          ${miniBar("Лига", s.league, 5)}
-          ${miniBar("Сборные", s.teams, 5)}
-        </div>
-      </div>
-      <div class="rt-total">
+      <div class="rt-score-col">${s.camp}</div>
+      <div class="rt-score-col">${s.merch}</div>
+      <div class="rt-score-col">${s.cup}</div>
+      <div class="rt-score-col">${s.league}</div>
+      <div class="rt-score-col">${s.teams}</div>
+      <div class="rt-total-col">
         ${c.rating.total}
         ${penaltyHtml}
       </div>
-    </div>
-  `;
-}
-
-function miniBar(label, value, max) {
-  const pct = max > 0 ? Math.min(value / max * 100, 100) : 0;
-  return `
-    <div class="mini-bar">
-      <span class="mini-bar-label">${label}</span>
-      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
-      <span class="mini-bar-val">${value}</span>
     </div>
   `;
 }
