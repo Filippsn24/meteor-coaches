@@ -468,4 +468,11 @@ a { color: inherit; text-decoration: none; }
   .kpi { padding: 16px; }
   .kpi-value { font-size: 32px; }
   .rating-label { width: 100px; }
+  .rt-coach { width: 140px; }
+  .rt-name { font-size: 13px; }
+  .rt-score-col { width: 48px; font-size: 12px; }
+  .rt-penalty-col { width: 48px; font-size: 12px; }
+  .rt-total-col { width: 48px; font-size: 18px; }
+  .rt-header { font-size: 10px; gap: 8px; }
+  .rating-table-row { gap: 8px; padding: 10px 12px; }
 }
