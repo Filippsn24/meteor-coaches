@@ -58,6 +58,14 @@ export function rowToCoach(row) {
 
   const tournaments = parseFloat(String(row["Турниры_баллы"] || "0").trim().replace(",", ".")) || 0;
 
+  const tournamentMatches = ["Турнир_команда1", "Турнир_команда2", "Турнир_команда3"]
+    .map((key) => {
+      const val = (row[key] || "").trim();
+      if (!val) return null;
+      return val.split(",").map((s) => s.trim()).filter(Boolean);
+    })
+    .filter(Boolean);
+
   return {
     fio: row["ФИО"],
     slug: fioToSlug(row["ФИО"]),
@@ -95,6 +103,7 @@ export function rowToCoach(row) {
       born2017,
     },
     tournaments,
+    tournamentMatches,
     penalty: parseNum(row["Штраф_апрель"]),
     contentBonus: Math.min(parseNum(row["Контент_бонус"]), 5),
   };

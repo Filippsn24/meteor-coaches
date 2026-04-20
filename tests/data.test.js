@@ -24,6 +24,9 @@ function sampleRow() {
     "Штраф_апрель": "0",
     "Контент_бонус": "3",
     "Турниры_баллы": "0",
+    "Турнир_команда1": "",
+    "Турнир_команда2": "",
+    "Турнир_команда3": "",
   };
 }
 
@@ -134,6 +137,23 @@ test("rowToCoach: parses Турниры_баллы as tournaments", () => {
   row["Турниры_баллы"] = "2.5";
   const c = rowToCoach(row);
   assert.equal(c.tournaments, 2.5);
+});
+
+test("rowToCoach: parses Турнир_команда1/2/3 as tournamentMatches", () => {
+  const row = sampleRow();
+  row["Турнир_команда1"] = "Метеор 2015 4:1 Спартак, Метеор 2015 2:2 Локомотив";
+  row["Турнир_команда2"] = "Метеор 2017 0:3 Динамо";
+  row["Турнир_команда3"] = "";
+  const c = rowToCoach(row);
+  assert.deepEqual(c.tournamentMatches, [
+    ["Метеор 2015 4:1 Спартак", "Метеор 2015 2:2 Локомотив"],
+    ["Метеор 2017 0:3 Динамо"],
+  ]);
+});
+
+test("rowToCoach: empty tournament teams give empty array", () => {
+  const c = rowToCoach(sampleRow());
+  assert.deepEqual(c.tournamentMatches, []);
 });
 
 test("rowToCoach: empty Турниры_баллы defaults to 0", () => {
