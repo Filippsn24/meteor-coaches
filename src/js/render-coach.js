@@ -73,14 +73,7 @@ export async function renderCoach(root, slug) {
           { label: "2017 г.р.", value: coach.league.born2017 },
         ],
       })}
-      ${kpiTile({
-        label: "Внешние турниры",
-        valueHtml: `${coach.tournaments} <span class="small">баллов</span>`,
-        expandable: coach.tournamentMatches.length > 0,
-        rows: coach.tournamentMatches.flatMap((team) =>
-          team.map((match) => ({ label: "", value: match }))
-        ),
-      })}
+      ${kpiTournaments(coach)}
     </section>
     <section class="rating-section">
       <h2 class="rating-title">РЕЙТИНГ ТРЕНЕРА</h2>
@@ -100,6 +93,20 @@ export async function renderCoach(root, slug) {
   root.querySelectorAll(".kpi.expandable").forEach((el) => {
     el.addEventListener("click", () => el.classList.toggle("expanded"));
   });
+}
+
+function kpiTournaments(coach) {
+  const hasMatches = coach.tournamentMatches.length > 0;
+  const matchLines = coach.tournamentMatches
+    .flatMap((team) => team.map((m) => `<div class="tournament-match">${escapeHtml(m)}</div>`))
+    .join("");
+  return `
+    <div class="kpi ${hasMatches ? "expandable" : ""}">
+      <div class="kpi-label">Внешние турниры</div>
+      <div class="kpi-value">${coach.tournaments} <span class="small">баллов</span></div>
+      ${hasMatches ? `<div class="kpi-seasons"><div class="tournament-matches">${matchLines}</div></div>` : ""}
+    </div>
+  `;
 }
 
 function kpiKids(kids) {

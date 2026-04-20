@@ -291,6 +291,11 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-dim);
 }
 .kpi-seasons-row b { color: #fff; font-weight: 600; }
+.tournament-match {
+  padding: 6px 0;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
 .diff-up { color: #22c55e; font-weight: 600; }
 .diff-down { color: #ef4444; font-weight: 600; }
 .diff-zero { color: #a3a3a3; }
