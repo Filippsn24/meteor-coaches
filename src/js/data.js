@@ -114,6 +114,7 @@ export function rowToCoach(row) {
 export function calculateRatings(coaches) {
   const kidsTotal = (c) => c.kids.march.total || c.kids.october.total || 1;
   const kidsSchool = (c) => c.kids.march.school || c.kids.october.school || 1;
+  const kidsKg = (c) => c.kids.march.kindergarten || c.kids.october.kindergarten || 0;
   const per10 = (val, c) => val / kidsTotal(c) * 10;
 
   // Конверсия лагеря: факт / дети школы (в лагерь едут только школьники)
@@ -122,19 +123,36 @@ export function calculateRatings(coaches) {
     return c.camp.fact_total / school * 100;
   };
 
+  // Кубок Метеора: среднее конверсий по месяцам
+  const cupAvg = (c) => {
+    const total = kidsTotal(c);
+    const school = kidsSchool(c);
+    const kg = kidsKg(c);
+    const months = [];
+    // Октябрь — все дети
+    months.push(c.cup.months.october / total);
+    // Декабрь — только школа
+    if (school > 0) months.push(c.cup.months.december / school);
+    // Февраль — только сады (пропускаем если нет садовских)
+    if (kg > 0) months.push(c.cup.months.february / kg);
+    // Апрель — только школа
+    if (school > 0) months.push(c.cup.months.april / school);
+    return months.length > 0 ? months.reduce((a, b) => a + b, 0) / months.length : 0;
+  };
+
   // Сырые значения для каждого тренера
   const raw = coaches.map((c) => ({
     camp: campConv(c),
     merch: per10(c.merch.total, c),
-    cup: per10(c.cup.total, c),
+    cup: cupAvg(c),
     league: c.league.total,
   }));
 
-  // Максимумы для нормализации
+  // Максимумы для нормализации (0.001 floor для cup, т.к. значения дробные)
   const max = {
     camp: Math.max(...raw.map((r) => r.camp), 1),
     merch: Math.max(...raw.map((r) => r.merch), 1),
-    cup: Math.max(...raw.map((r) => r.cup), 1),
+    cup: Math.max(...raw.map((r) => r.cup)) || 1,
     league: Math.max(...raw.map((r) => r.league), 1),
   };
 
