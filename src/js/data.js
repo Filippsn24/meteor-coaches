@@ -117,6 +117,7 @@ export function calculateRatings(coaches) {
     merch: per10(c.merch.total, c),
     cup: per10(c.cup.total, c),
     league: c.league.total,
+    tournaments: c.tournaments,
   }));
 
   // Максимумы для нормализации
@@ -125,6 +126,7 @@ export function calculateRatings(coaches) {
     merch: Math.max(...raw.map((r) => r.merch), 1),
     cup: Math.max(...raw.map((r) => r.cup), 1),
     league: Math.max(...raw.map((r) => r.league), 1),
+    tournaments: Math.max(...raw.map((r) => r.tournaments), 1),
   };
 
   // Считаем баллы
@@ -135,10 +137,11 @@ export function calculateRatings(coaches) {
       merch: +(r.merch / max.merch * 5).toFixed(1),
       cup: +(r.cup / max.cup * 5).toFixed(1),
       league: +(r.league / max.league * 5).toFixed(1),
+      tournaments: +(r.tournaments / max.tournaments * 5).toFixed(1),
       teams: +(Math.min(c.teams * 1.5, 5)).toFixed(1),
       content: c.contentBonus,
     };
-    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams + scores.content;
+    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams + scores.tournaments + scores.content;
     const total = +(bonus - c.penalty).toFixed(1);
     c.rating = { scores, penalty: c.penalty, bonus, total };
     return c;

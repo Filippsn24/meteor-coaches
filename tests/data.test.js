@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { rowToCoach, parsePercent, parseNum } from "../src/js/data.js";
+import { rowToCoach, calculateRatings, parsePercent, parseNum } from "../src/js/data.js";
 import { parseCSV } from "../src/js/csv.js";
 
 const fixtureCsv = readFileSync(new URL("../test-fixtures/sample-dashboard.csv", import.meta.url), "utf8");
@@ -141,6 +141,31 @@ test("rowToCoach: empty Турниры_баллы defaults to 0", () => {
   row["Турниры_баллы"] = "";
   const c = rowToCoach(row);
   assert.equal(c.tournaments, 0);
+});
+
+test("calculateRatings: tournaments normalized to 0-5 scale", () => {
+  const rows = [
+    { ...sampleRow(), "ФИО": "Тренер А", "Турниры_баллы": "3" },
+    { ...sampleRow(), "ФИО": "Тренер Б", "Турниры_баллы": "1.5" },
+    { ...sampleRow(), "ФИО": "Тренер В", "Турниры_баллы": "0" },
+  ];
+  const coaches = rows.map(rowToCoach);
+  calculateRatings(coaches);
+  assert.equal(coaches[0].rating.scores.tournaments, 5);
+  assert.equal(coaches[1].rating.scores.tournaments, 2.5);
+  assert.equal(coaches[2].rating.scores.tournaments, 0);
+});
+
+test("calculateRatings: tournaments included in total", () => {
+  const rows = [
+    { ...sampleRow(), "ФИО": "Тренер А", "Турниры_баллы": "3" },
+  ];
+  const coaches = rows.map(rowToCoach);
+  calculateRatings(coaches);
+  const s = coaches[0].rating.scores;
+  const expectedBonus = s.camp + s.merch + s.cup + s.league + s.teams + s.tournaments + s.content;
+  const expectedTotal = +(expectedBonus - coaches[0].penalty).toFixed(1);
+  assert.equal(coaches[0].rating.total, expectedTotal);
 });
 
 test("rowToCoach: initials from single name", () => {
