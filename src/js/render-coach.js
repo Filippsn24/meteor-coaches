@@ -73,6 +73,11 @@ export async function renderCoach(root, slug) {
           { label: "2017 г.р.", value: coach.league.born2017 },
         ],
       })}
+      ${kpiTile({
+        label: "Внешние турниры",
+        valueHtml: `${coach.tournaments} <span class="small">баллов</span>`,
+        expandable: false,
+      })}
     </section>
     <section class="rating-section">
       <h2 class="rating-title">РЕЙТИНГ ТРЕНЕРА</h2>
@@ -83,6 +88,7 @@ export async function renderCoach(root, slug) {
         ${ratingBar("Кубок Метеора", coach.rating.scores.cup, 5)}
         ${ratingBar("Суперлига", coach.rating.scores.league, 5)}
         ${ratingBar("Играющие сборные", coach.rating.scores.teams, 5)}
+        ${ratingBar("Внешние турниры", coach.rating.scores.tournaments, 5)}
         ${ratingBar("Контент бонус", coach.rating.scores.content, 5)}
         ${coach.rating.penalty > 0 ? ratingBar("Штраф контент", -coach.rating.penalty, 0, true) : ""}
       </div>
