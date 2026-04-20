@@ -171,17 +171,15 @@ test("rowToCoach: empty Победитель_кубка defaults to 0", () => {
   assert.equal(c.cupWinner, 0);
 });
 
-test("calculateRatings: cupWinner normalized to 0-5 scale", () => {
+test("calculateRatings: cupWinner uses raw value (no normalization)", () => {
   const rows = [
     { ...sampleRow(), "ФИО": "Тренер А", "Победитель_кубка": "3" },
     { ...sampleRow(), "ФИО": "Тренер Б", "Победитель_кубка": "1" },
-    { ...sampleRow(), "ФИО": "Тренер В", "Победитель_кубка": "0" },
   ];
   const coaches = rows.map(rowToCoach);
   calculateRatings(coaches);
-  assert.equal(coaches[0].rating.scores.cupWinner, 5);
-  assert.equal(coaches[1].rating.scores.cupWinner, +(1 / 3 * 5).toFixed(1));
-  assert.equal(coaches[2].rating.scores.cupWinner, 0);
+  assert.equal(coaches[0].rating.scores.cupWinner, 3);
+  assert.equal(coaches[1].rating.scores.cupWinner, 1);
 });
 
 test("rowToCoach: empty Турниры_баллы defaults to 0", () => {
@@ -191,17 +189,15 @@ test("rowToCoach: empty Турниры_баллы defaults to 0", () => {
   assert.equal(c.tournaments, 0);
 });
 
-test("calculateRatings: tournaments normalized to 0-5 scale", () => {
+test("calculateRatings: tournaments uses raw value (no normalization)", () => {
   const rows = [
     { ...sampleRow(), "ФИО": "Тренер А", "Турниры_баллы": "3" },
     { ...sampleRow(), "ФИО": "Тренер Б", "Турниры_баллы": "1.5" },
-    { ...sampleRow(), "ФИО": "Тренер В", "Турниры_баллы": "0" },
   ];
   const coaches = rows.map(rowToCoach);
   calculateRatings(coaches);
-  assert.equal(coaches[0].rating.scores.tournaments, 5);
-  assert.equal(coaches[1].rating.scores.tournaments, 2.5);
-  assert.equal(coaches[2].rating.scores.tournaments, 0);
+  assert.equal(coaches[0].rating.scores.tournaments, 3);
+  assert.equal(coaches[1].rating.scores.tournaments, 1.5);
 });
 
 test("calculateRatings: tournaments included in total", () => {
