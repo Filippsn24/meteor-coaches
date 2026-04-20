@@ -17,6 +17,7 @@ const COLUMNS = [
   { key: "league", label: "Лига" },
   { key: "teams", label: "Сборные" },
   { key: "tournaments", label: "Турниры" },
+  { key: "cupWinner", label: "Победитель" },
   { key: "content", label: "Контент" },
 ];
 

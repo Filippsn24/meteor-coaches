@@ -27,6 +27,7 @@ function sampleRow() {
     "Турнир_команда1": "",
     "Турнир_команда2": "",
     "Турнир_команда3": "",
+    "Победитель_кубка": "0",
   };
 }
 
@@ -154,6 +155,33 @@ test("rowToCoach: parses Турнир_команда1/2/3 as tournamentMatches",
 test("rowToCoach: empty tournament teams give empty array", () => {
   const c = rowToCoach(sampleRow());
   assert.deepEqual(c.tournamentMatches, []);
+});
+
+test("rowToCoach: parses Победитель_кубка as cupWinner", () => {
+  const row = sampleRow();
+  row["Победитель_кубка"] = "3";
+  const c = rowToCoach(row);
+  assert.equal(c.cupWinner, 3);
+});
+
+test("rowToCoach: empty Победитель_кубка defaults to 0", () => {
+  const row = sampleRow();
+  row["Победитель_кубка"] = "";
+  const c = rowToCoach(row);
+  assert.equal(c.cupWinner, 0);
+});
+
+test("calculateRatings: cupWinner normalized to 0-5 scale", () => {
+  const rows = [
+    { ...sampleRow(), "ФИО": "Тренер А", "Победитель_кубка": "3" },
+    { ...sampleRow(), "ФИО": "Тренер Б", "Победитель_кубка": "1" },
+    { ...sampleRow(), "ФИО": "Тренер В", "Победитель_кубка": "0" },
+  ];
+  const coaches = rows.map(rowToCoach);
+  calculateRatings(coaches);
+  assert.equal(coaches[0].rating.scores.cupWinner, 5);
+  assert.equal(coaches[1].rating.scores.cupWinner, +(1 / 3 * 5).toFixed(1));
+  assert.equal(coaches[2].rating.scores.cupWinner, 0);
 });
 
 test("rowToCoach: empty Турниры_баллы defaults to 0", () => {

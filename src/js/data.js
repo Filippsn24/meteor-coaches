@@ -57,6 +57,7 @@ export function rowToCoach(row) {
   const born2017 = parseNum(row["Суперлига_2017"]);
 
   const tournaments = parseFloat(String(row["Турниры_баллы"] || "0").trim().replace(",", ".")) || 0;
+  const cupWinner = parseNum(row["Победитель_кубка"]);
 
   const tournamentMatches = ["Турнир_команда1", "Турнир_команда2", "Турнир_команда3"]
     .map((key) => {
@@ -104,6 +105,7 @@ export function rowToCoach(row) {
     },
     tournaments,
     tournamentMatches,
+    cupWinner,
     penalty: parseNum(row["Штраф_апрель"]),
     contentBonus: Math.min(parseNum(row["Контент_бонус"]), 5),
   };
@@ -127,6 +129,7 @@ export function calculateRatings(coaches) {
     cup: per10(c.cup.total, c),
     league: c.league.total,
     tournaments: c.tournaments,
+    cupWinner: c.cupWinner,
   }));
 
   // Максимумы для нормализации
@@ -136,6 +139,7 @@ export function calculateRatings(coaches) {
     cup: Math.max(...raw.map((r) => r.cup), 1),
     league: Math.max(...raw.map((r) => r.league), 1),
     tournaments: Math.max(...raw.map((r) => r.tournaments), 1),
+    cupWinner: Math.max(...raw.map((r) => r.cupWinner), 1),
   };
 
   // Считаем баллы
@@ -147,10 +151,11 @@ export function calculateRatings(coaches) {
       cup: +(r.cup / max.cup * 5).toFixed(1),
       league: +(r.league / max.league * 5).toFixed(1),
       tournaments: +(r.tournaments / max.tournaments * 5).toFixed(1),
+      cupWinner: +(r.cupWinner / max.cupWinner * 5).toFixed(1),
       teams: +(Math.min(c.teams * 1.5, 5)).toFixed(1),
       content: c.contentBonus,
     };
-    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams + scores.tournaments + scores.content;
+    const bonus = scores.camp + scores.merch + scores.cup + scores.league + scores.teams + scores.tournaments + scores.cupWinner + scores.content;
     const total = +(bonus - c.penalty).toFixed(1);
     c.rating = { scores, penalty: c.penalty, bonus, total };
     return c;
