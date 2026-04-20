@@ -450,6 +450,77 @@ a { color: inherit; text-decoration: none; }
 .rating-table-row .rt-col-highlight { color: var(--burgundy); font-weight: 800; }
 .rating-table-row .rt-total-col.rt-col-highlight { color: var(--burgundy); }
 
+/* === Rating help modal === */
+.rating-help-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 8px;
+  vertical-align: middle;
+  transition: border-color 0.2s, color 0.2s;
+}
+.rating-help-btn:hover { border-color: var(--burgundy); color: #fff; }
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.modal-open { display: flex; }
+.modal-content {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 560px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-close:hover { color: #fff; }
+.modal-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+  color: var(--burgundy);
+}
+.modal-item {
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+.modal-item:last-child { border-bottom: none; }
+.modal-item b { color: #fff; }
+.modal-num {
+  color: var(--burgundy);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
 /* === Adaptive === */
 @media (max-width: 1023px) {
   .grid { grid-template-columns: repeat(3, 1fr); padding: 24px; }

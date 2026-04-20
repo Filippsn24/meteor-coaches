@@ -26,7 +26,7 @@ export async function renderRating(root) {
     <header class="header">
       <div class="header-brand">
         <img src="assets/logo.png" alt="" class="header-logo">
-        <div class="header-title">РЕЙТИНГ ТРЕНЕРОВ</div>
+        <div class="header-title">РЕЙТИНГ ТРЕНЕРОВ <button class="rating-help-btn" id="rating-help-btn">?</button></div>
       </div>
       <div class="header-nav">
         <a href="#/coaches" class="nav-link">Тренеры</a>
@@ -35,6 +35,23 @@ export async function renderRating(root) {
     </header>
     <div class="header-season-bar">СЕЗОН ${SEASON_LABEL}</div>
     <section class="rating-list" id="rating-list">Загрузка…</section>
+    <div class="modal-overlay" id="rating-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <h2 class="modal-title">КАК СЧИТАЕТСЯ РЕЙТИНГ</h2>
+        <div class="modal-body">
+          <div class="modal-item"><span class="modal-num">1.</span><b>Лагерь</b> (до 5 баллов) — конверсия детей в лагерь: факт / кол-во школьников × 100%. Лучший результат = 5 баллов, остальные пропорционально.</div>
+          <div class="modal-item"><span class="modal-num">2.</span><b>Мерч</b> (до 5 баллов) — продажи мерча на 10 детей в группе. Лучший результат = 5 баллов, остальные пропорционально.</div>
+          <div class="modal-item"><span class="modal-num">3.</span><b>Кубок</b> (до 5 баллов) — участие в Кубке Метеора на 10 детей в группе. Лучший результат = 5 баллов, остальные пропорционально.</div>
+          <div class="modal-item"><span class="modal-num">4.</span><b>Лига</b> (до 5 баллов) — количество команд в Суперлиге. Лучший результат = 5 баллов, остальные пропорционально.</div>
+          <div class="modal-item"><span class="modal-num">5.</span><b>Сборные</b> (до 5 баллов) — количество играющих сборных × 1.5, максимум 5.</div>
+          <div class="modal-item"><span class="modal-num">6.</span><b>Турниры</b> — баллы за результаты внешних турниров за последние выходные. Победа = 1 балл (0.5 при двух играх), ничья = 0.5. Баллы всех команд складываются.</div>
+          <div class="modal-item"><span class="modal-num">7.</span><b>Победитель</b> — баллы за попадание в тройку на Кубке Метеора. 1 балл за каждое призовое место.</div>
+          <div class="modal-item"><span class="modal-num">8.</span><b>Контент</b> (до 5 баллов) — бонус за контент.</div>
+          <div class="modal-item"><span class="modal-num">9.</span><b>Штраф</b> — вычитается из итого за невыполнение рабочих задач.</div>
+        </div>
+      </div>
+    </div>
   `;
 
   let coaches;
@@ -90,6 +107,17 @@ export async function renderRating(root) {
   }
 
   renderTable();
+
+  const modal = root.querySelector("#rating-modal");
+  root.querySelector("#rating-help-btn").addEventListener("click", () => {
+    modal.classList.add("modal-open");
+  });
+  root.querySelector("#modal-close").addEventListener("click", () => {
+    modal.classList.remove("modal-open");
+  });
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.classList.remove("modal-open");
+  });
 }
 
 function ratingRow(c, rank, activeSort) {
