@@ -76,7 +76,10 @@ export async function renderCoach(root, slug) {
       ${kpiTile({
         label: "Внешние турниры",
         valueHtml: `${coach.tournaments} <span class="small">баллов</span>`,
-        expandable: false,
+        expandable: coach.tournamentMatches.length > 0,
+        rows: coach.tournamentMatches.flatMap((team) =>
+          team.map((match) => ({ label: "", value: match }))
+        ),
       })}
     </section>
     <section class="rating-section">
