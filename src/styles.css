@@ -356,7 +356,7 @@ a { color: inherit; text-decoration: none; }
 .rating-fill.rating-bar-penalty { background: #ef4444; }
 
 /* === Rating leaderboard === */
-.rating-list { max-width: 1220px; margin: 0 auto; padding: 24px; overflow-x: auto; }
+.rating-list { max-width: 1500px; margin: 0 auto; padding: 24px; overflow-x: auto; }
 .rt-header-sticky {
   position: sticky;
   top: 0;
@@ -416,14 +416,14 @@ a { color: inherit; text-decoration: none; }
 .rt-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .rt-name { font-weight: 600; font-size: 15px; }
 .rt-score-col {
-  width: 50px;
+  flex: 1;
+  min-width: 50px;
   text-align: center;
   font-size: 13px;
   font-weight: 600;
-  flex-shrink: 0;
 }
 .rt-total-col {
-  width: 50px;
+  width: 70px;
   text-align: right;
   font-size: 20px;
   font-weight: 800;
@@ -432,7 +432,7 @@ a { color: inherit; text-decoration: none; }
   margin-left: 8px;
 }
 .rt-penalty-col {
-  width: 50px;
+  width: 56px;
   text-align: center;
   font-size: 13px;
   font-weight: 700;
