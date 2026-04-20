@@ -56,6 +56,8 @@ export function rowToCoach(row) {
   const born2015 = parseNum(row["Суперлига_2015"]);
   const born2017 = parseNum(row["Суперлига_2017"]);
 
+  const tournaments = parseFloat(String(row["Турниры_баллы"] || "0").trim().replace(",", ".")) || 0;
+
   return {
     fio: row["ФИО"],
     slug: fioToSlug(row["ФИО"]),
@@ -92,6 +94,7 @@ export function rowToCoach(row) {
       born2015,
       born2017,
     },
+    tournaments,
     penalty: parseNum(row["Штраф_апрель"]),
     contentBonus: Math.min(parseNum(row["Контент_бонус"]), 5),
   };

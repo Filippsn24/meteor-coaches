@@ -23,6 +23,7 @@ function sampleRow() {
     "Суперлига_2015": "10", "Суперлига_2017": "0",
     "Штраф_апрель": "0",
     "Контент_бонус": "3",
+    "Турниры_баллы": "0",
   };
 }
 
@@ -126,6 +127,20 @@ test("contentBonus: capped at 5", () => {
   row["Контент_бонус"] = "8";
   const c = rowToCoach(row);
   assert.equal(c.contentBonus, 5);
+});
+
+test("rowToCoach: parses Турниры_баллы as tournaments", () => {
+  const row = sampleRow();
+  row["Турниры_баллы"] = "2.5";
+  const c = rowToCoach(row);
+  assert.equal(c.tournaments, 2.5);
+});
+
+test("rowToCoach: empty Турниры_баллы defaults to 0", () => {
+  const row = sampleRow();
+  row["Турниры_баллы"] = "";
+  const c = rowToCoach(row);
+  assert.equal(c.tournaments, 0);
 });
 
 test("rowToCoach: initials from single name", () => {
