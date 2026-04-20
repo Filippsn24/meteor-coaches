@@ -17,7 +17,7 @@ const COLUMNS = [
   { key: "league", label: "Лига" },
   { key: "teams", label: "Сборные" },
   { key: "tournaments", label: "Турниры" },
-  { key: "cupWinner", label: "Победитель" },
+  { key: "cupWinner", label: "Победы" },
   { key: "content", label: "Контент" },
 ];
 
@@ -46,7 +46,7 @@ export async function renderRating(root) {
           <div class="modal-item"><span class="modal-num">4.</span><b>Лига</b> (до 5 баллов) — количество команд в Суперлиге. Лучший результат = 5 баллов, остальные пропорционально.</div>
           <div class="modal-item"><span class="modal-num">5.</span><b>Сборные</b> (до 5 баллов) — количество играющих сборных × 1.5, максимум 5.</div>
           <div class="modal-item"><span class="modal-num">6.</span><b>Турниры</b> — баллы за результаты внешних турниров за последние выходные. Победа = 1 балл (0.5 при двух играх), ничья = 0.5. Баллы всех команд складываются.</div>
-          <div class="modal-item"><span class="modal-num">7.</span><b>Победитель</b> — баллы за попадание в тройку на Кубке Метеора. 1 балл за каждое призовое место.</div>
+          <div class="modal-item"><span class="modal-num">7.</span><b>Победы</b> — баллы за победу в переходящем Кубке Метеора. Начисляются только за последний турнир по возрастной категории. 1 балл за каждое призовое место.</div>
           <div class="modal-item"><span class="modal-num">8.</span><b>Контент</b> (до 5 баллов) — бонус за контент.</div>
           <div class="modal-item"><span class="modal-num">9.</span><b>Штраф</b> — вычитается из итого за невыполнение рабочих задач.</div>
         </div>
@@ -107,6 +107,7 @@ export async function renderRating(root) {
   }
 
   renderTable();
+
 
   const modal = root.querySelector("#rating-modal");
   root.querySelector("#rating-help-btn").addEventListener("click", () => {
